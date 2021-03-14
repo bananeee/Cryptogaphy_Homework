@@ -7,6 +7,13 @@ int getChar(char c)
     return (c - 'a');
 }
 
+void getCharFromString(string s)
+{
+    for (int i = 0; i < s.size(); i++)
+        cout << getChar(s[i]) << " ";
+    cout << endl;
+}
+
 int gcd(int a, int b)
 {
     if (b == 0)
@@ -14,9 +21,9 @@ int gcd(int a, int b)
     return gcd(b, a % b);
 }
 
-int findRelativePrime(long num, long numLength)
+int findRelativePrime(long num, long start)
 {
-    long start = pow(10, numLength) + 1;
+    // long start = pow(10, numLength) + 1;
     int step = num % 2 ? 2 : 1;
     while (gcd(num, start) != 1)
     {
@@ -69,5 +76,39 @@ int extendEuclid(int a, int b)
 int main()
 {
     // cout << findRelativePrime(31510176, 7);
-    cout << extendEuclid(75, 28);
+    getCharFromString("minh");
+    // while (true)
+    // {
+    //     cout << "Welcome, this is a small tool support for cryptography course\n"
+    //     << "Please choose command:\n"
+    //     << "0. Get alphabet position from a string\n"
+    //     << "1. Get GCD from 2 number a & b\n"
+    //     << "2. Find relative prime of a number\n"
+    //     << "3. Find multiplicative inverse of a modulo m: b^-1 mod a\n";
+
+    //     int userChoice;
+    //     cin >> userChoice;
+
+    //     switch (userChoice)
+    //     {
+    //     case 0:
+            
+    //         break;
+    //     case 1:
+            
+    //         break;
+    //     case 2:
+            
+    //         break;
+    //     case 3:
+            
+    //         break;
+    //     default:
+    //         cout << "Wrong command!";
+    //         break;
+    //     }
+    // }
+    // // getCharFromString("minh");
+    // cout << findRelativePrime(571 * 4970, 34564456);
+    
 }
