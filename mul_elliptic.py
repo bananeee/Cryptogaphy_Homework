@@ -56,4 +56,4 @@ b = 13
 # the primitive point (3, 10)
 generator=(3, 10)
 # 57 = b(111001)
-print "57P = ", double_and_add(57, generator, p, a)
+# print "57P = ", double_and_add(57, generator, p, a)
