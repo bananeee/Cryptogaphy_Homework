@@ -1,9 +1,16 @@
 from math import sqrt
-
+from prime import *
 # Extended Euclidean algorithm
 
 
 def extended_gcd(aa, bb):
+    """extended euclid algorithm
+
+    Args:
+        aa : [description]
+        bb : [description]
+
+    """
     lastremainder, remainder = abs(aa), abs(bb)
     x, lastx, y, lasty = 0, 1, 1, 0
     while remainder:
@@ -69,7 +76,6 @@ def findPrimefactors(s, n):
 
         # While i divides n, print i and divide n
         while (n % i == 0):
-
             s.add(i)
             n = n // i
 
@@ -79,15 +85,36 @@ def findPrimefactors(s, n):
         s.add(n)
 
 
+def primeFactors(n):
+    arr = []
+    if(n % 2 == 0):
+        arr.append(2)
+
+    while n % 2 == 0:
+        n = n/2
+
+    for i in range(3, int(sqrt(n)+1), 2):
+        while n % i == 0:
+            if(len(arr) == 0):
+                arr.append(i)
+            elif(arr[len(arr)-1] != i):
+                arr.append(i)
+            n = n/i
+    if n > 2:
+        arr.append(int(n))
+    return arr
+
+
 def primitive(n):
-    s = set()
+    # s = set()
 
     # Find value of Euler Totient function of n. Since n is a prime number, the
     # value of Euler Totient function is n-1 as there are n-1 relatively prime numbers.
     phi = n - 1
-    return 5
     # Find prime factors of phi and store in a set
-    findPrimefactors(s, phi)
+    # findPrimefactors(s, phi)
+
+    s = primeFactors(phi)
 
     # Check for every number from 2 to phi
     for r in range(2, phi + 1):
@@ -148,3 +175,18 @@ def double_and_add(multi, generator, p, a):
             (x3, y3) = ecc_double(x_tmp, y_tmp, p, a)
             (x_tmp, y_tmp) = (x3, y3)
     return (x3, y3)
+
+def convertToInt(s):
+    sum = 0
+    for i in range(0, len(s)):
+        sum += ((ord(s[i]) - ord('a')) * 24**i)
+    return sum
+
+def convertToString(n):
+    s = ""
+    while n > 0:
+        s = s + chr(n % 24 + ord('a'))
+        n = n // 24
+    return s
+
+# print(primitive)

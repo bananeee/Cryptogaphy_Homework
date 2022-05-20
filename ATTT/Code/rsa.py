@@ -23,32 +23,93 @@ def rsa_decrypt(y, a, n):
     """
     return modexp(y, a, n)
 
-    print()
+
+def rsa_signature(x, a, n):
+    """RSA signature sigk = x^a mod p
+
+    Args:
+        x ([type]): [description]
+        a ([type]): [description]
+        n ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    return modexp(x, a, n)
+
+
+def rsa_verify(x, y, b, n):
+    """RSA verification verification
+
+    Args:
+        x ([type]): [description]
+        y ([type]): [description]
+        b ([type]): [description]
+        n ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    return x == modexp(y, b, n)
 
 
 if __name__ == "__main__":
     # p, q are 512 bit primes
     # random b such taht gcd(b, phi(n)) = 1 => choose b as random prime for easy calculating
 
-    x = int(input("Enter number to encrypt:"))
+    # NOTE: Alice
+    pA = generate_prime_number(512)
+    qA = generate_prime_number(512)
 
-    # p = generate_prime_number(512)
-    # q = generate_prime_number(512)
+    nA = pA*qA
+    pnA = (pA-1)*(qA-1)  # phi(n)
 
-    p = 9607148119662215966953860291134935552021529970948227821414276310259699224328420089251860001734469581369286662661929489456209928679379851155917574132015383
-    q = 7942814997448628785890615271902035560839675652138142370694028632742919644785493862232366756328919273314953243481427167839097110118579835974997476662633073
+    bA = generate_prime_number(10)
+    # bA = 673
+    aA = modinv(bA, pnA)
 
-    n = p*q
-    pn = (p-1)*(q-1)  # phi(n)
+    print("Public key of Alice is (n,b): (", nA, ",", bA, ")")
+    print("Private key of Alice is (p,q,a): (", pA, ",", qA, ",", aA, ")")
+    print("--------")
+    
+    # NOTE: Bob
+    pB = generate_prime_number(512)
+    qB = generate_prime_number(512)
 
-    # b = generate_prime_number(10)
-    b = 673
-    a = modinv(b, pn)
+    nB = pB*qB
+    pnB = (pB-1)*(qB-1)  # phi(n)
 
-    print("Public key is (n,b): (", n, ",", b, ")")
-    print("Private key is (p,q,a): (", p, ",", q, ",", a, ")")
+    bB = generate_prime_number(10)
+    # bB = 673
+    aB = modinv(bB, pnB)
 
-    encrypt = rsa_encrypt(x, b, n)
-    decrypt = rsa_decrypt(encrypt, a, n)
-    print("RSA encryption is", encrypt)
-    print("RSA decryption is", decrypt)
+    print("Public key of Bob is (n,b): (", nB, ",", bB, ")")
+    print("Private key of Bob is (p,q,a): (", pB, ",", qB, ",", aB, ")")
+    print("--------")
+    
+    print("Alice want to send message to Bob")
+    message = input("Enter message to encrypt:")
+    x = convertToInt(message)
+
+    encrypt = rsa_encrypt(x, bB, nB)
+    sig = rsa_signature(encrypt, aA, nA)
+    
+    print("Alice send to Bob code message:", sig)
+    print("--------")
+
+    ver = rsa_verify(encrypt, sig, bA, nA)
+    context = rsa_decrypt(encrypt, aB, nB)
+    print("Bob received message")
+    print("Verify:", ver)
+    print("Message:", convertToString(context))
+
+# NOTE: Encryption
+#     encrypt = rsa_encrypt(x, b, n)
+#     decrypt = rsa_decrypt(encrypt, a, n)
+#     print("RSA encryption is", encrypt)
+#     print("RSA decryption is", decrypt)
+
+# NOTE: Signature
+    # sig = rsa_signature(x, a, n)
+    # print("Signature is ", sig)
+    # print("Verify result is", rsa_verify(x, sig, b, n))
